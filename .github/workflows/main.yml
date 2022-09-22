@@ -50,6 +50,10 @@ jobs:
         shell: bash
       - name: CMake
         run: cmake . -B ${{ env.build_dir }} -DCMAKE_BUILD_TYPE=${{ env.config }}
+      - name: Add swap space for RAM-hungry compilation
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 12
       - name: Build
         working-directory: ${{ env.build_dir }}
         run: cmake --build . --target all --verbose -j `nproc`
