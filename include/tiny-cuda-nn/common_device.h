@@ -402,6 +402,9 @@ __device__ inline float identity_2nd_derivative(float val) {
 
 template <typename F, typename FPRIME, typename FPRIMEPRIME>
 __device__ inline void pos_fract(const float input, float* pos, float* pos_derivative, float* pos_2nd_derivative, uint32_t* pos_grid, float scale, F interpolation_fun, FPRIME interpolation_fun_derivative, FPRIMEPRIME interpolation_fun_2nd_derivative) {
+	// The offset of 0.5 causes different scales to be staggered with respect to each other, thus
+	// preventing spurious alignment of fractional coordinates upon integer scales (or powers thereof).
+	// This is mentioned in Appendix A of the "Instant Neural Graphics Primitives" paper.
 	*pos = input * scale + 0.5f;
 	int tmp = floorf(*pos);
 	*pos_grid = (uint32_t)tmp;
@@ -413,6 +416,9 @@ __device__ inline void pos_fract(const float input, float* pos, float* pos_deriv
 
 template <typename F, typename FPRIME>
 __device__ inline void pos_fract(const float input, float* pos, float* pos_derivative, uint32_t* pos_grid, float scale, F interpolation_fun, FPRIME interpolation_fun_derivative) {
+	// The offset of 0.5 causes different scales to be staggered with respect to each other, thus
+	// preventing spurious alignment of fractional coordinates upon integer scales (or powers thereof).
+	// This is mentioned in Appendix A of the "Instant Neural Graphics Primitives" paper.
 	*pos = input * scale + 0.5f;
 	int tmp = floorf(*pos);
 	*pos_grid = (uint32_t)tmp;
@@ -423,6 +429,9 @@ __device__ inline void pos_fract(const float input, float* pos, float* pos_deriv
 
 template <typename F>
 __device__ inline void pos_fract(const float input, float* pos, uint32_t* pos_grid, float scale, F interpolation_fun) {
+	// The offset of 0.5 causes different scales to be staggered with respect to each other, thus
+	// preventing spurious alignment of fractional coordinates upon integer scales (or powers thereof).
+	// This is mentioned in Appendix A of the "Instant Neural Graphics Primitives" paper.
 	*pos = input * scale + 0.5f;
 	int tmp = floorf(*pos);
 	*pos_grid = (uint32_t)tmp;
